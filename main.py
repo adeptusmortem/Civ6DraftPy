@@ -6,7 +6,6 @@ from math import isclose
 from random import random, shuffle
 
 class LeaderClass:
-
     # Атрибуты лидеров, имя, специализация, нация, можно будет добавить еще роль и тд
     def __init__(self, name, spec, nation):
         self.name = name      # имя лидера
