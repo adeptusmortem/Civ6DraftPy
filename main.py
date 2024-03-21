@@ -110,7 +110,6 @@ def main(page: ft.Page) -> None:
         shuffle(AllowedNations)
         for leader in AllowedNations:
             if (leader.name not in seen_leader) and (leader.nation not in seen_nation):
-                # RandomNations.append(leader)
                 seen_leader.add(leader.name)
                 seen_nation.add(leader.nation)
             else:
@@ -119,25 +118,32 @@ def main(page: ft.Page) -> None:
         ResultPlayersCol.clean()
 
         ResultPlayersCol.controls.append(ft.Divider(thickness=3))
-
+        clipboard_text = ''
+        
         try:
             RandomNations[int(slider_n_of_players.value*slider_n_for_players.value)]
+            clipboard_text = str(clipboard_text)+str("="*30)+"\n"
             for i in range(int(slider_n_of_players.value*slider_n_for_players.value)):
                 if isclose(i % slider_n_for_players.value, 0):
                     ResultPlayersCol.controls.append(ft.Text(value=f"Игрок №{int(i // slider_n_for_players.value + 1)}"))
                     ResultPlayersCol.controls.append(ft.Divider(thickness=1))
+                    clipboard_text = str(clipboard_text)+f"Игрок №{int(i // slider_n_for_players.value + 1)}\n"
+                    clipboard_text = str(clipboard_text)+str("="*30)+"\n"
 
                 ResultPlayersCol.controls.append(
                     ft.Text(
                         value=f"{str(RandomNations[i].name)} {str(RandomNations[i].spec)}, {str(RandomNations[i].nation)}"
                     )
                 )
+                clipboard_text = str(clipboard_text)+f"{str(RandomNations[i].name)} {str(RandomNations[i].spec)}, {str(RandomNations[i].nation)}\n"
 
                 if isclose((i+1) % slider_n_for_players.value, 0):
                     ResultPlayersCol.controls.append(ft.Divider(thickness=3, height=20))
+                    clipboard_text = str(clipboard_text)+str("="*30)+"\n"
         except IndexError:
             ResultPlayersCol.controls.append(ft.Text(value='Ну у вас и запросы...'))
 
+        page.set_clipboard(clipboard_text)
         RandomNations = []
         seen_leader.clear()
         seen_nation.clear()
